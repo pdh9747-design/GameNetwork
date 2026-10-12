@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,8 +6,10 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
+    public float gravity = -9.81f;
 
     private CharacterController controller;
+    private float verticalVelocity = 0f;
 
     void Awake()
     {
@@ -35,6 +38,16 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 move = new Vector3(x, 0f, z).normalized;
 
-        controller.Move(move * moveSpeed * Time.deltaTime);
+        if (controller.isGrounded && verticalVelocity < 0f)
+        {
+            verticalVelocity = -2f;
+        }
+
+        verticalVelocity += gravity * Time.deltaTime;
+
+        Vector3 velocity = move * moveSpeed;
+        velocity.y = verticalVelocity;
+
+        controller.Move(velocity * Time.deltaTime);
     }
 }
