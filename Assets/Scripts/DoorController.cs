@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,11 +7,13 @@ public class DoorController : MonoBehaviour
     public Transform door;
     public float openDistance = 2f;
     public float openSpeed = 3f;
+    public float interactDistance = 3f;
 
     private Vector3 closedPosition;
     private Vector3 openPosition;
     private bool isOpen = false;
     private PlayerInventory playerInventory;
+    private Transform playerTransform;
 
     void Start()
     {
@@ -19,6 +22,14 @@ public class DoorController : MonoBehaviour
 
         closedPosition = door.position;
         openPosition = closedPosition + Vector3.right * openDistance;
+
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        if (player != null)
+        {
+            playerTransform = player.transform;
+            playerInventory = player.GetComponent<PlayerInventory>();
+        }
     }
 
     void Update()
@@ -28,10 +39,19 @@ public class DoorController : MonoBehaviour
 
         if (Keyboard.current.eKey.wasPressedThisFrame && !isOpen)
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (playerTransform == null)
+                return;
 
-            if (player != null)
-                playerInventory = player.GetComponent<PlayerInventory>();
+            float distance = Vector3.Distance(
+                playerTransform.position,
+                door.position
+            );
+
+            if (distance > interactDistance)
+            {
+                Debug.Log("문 가까이에서 E 키를 눌러 주세요.");
+                return;
+            }
 
             if (playerInventory != null && playerInventory.hasKey)
             {
