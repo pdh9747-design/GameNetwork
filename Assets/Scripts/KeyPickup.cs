@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 public class KeyPickup : MonoBehaviour
@@ -8,13 +9,14 @@ public class KeyPickup : MonoBehaviour
         {
             PlayerInventory inventory = other.GetComponent<PlayerInventory>();
 
-            if (inventory != null)
+            if (inventory != null && !inventory.hasKey)
             {
-                inventory.hasKey = true;
+                inventory.AddItem("Key");
+
                 Debug.Log("ø≠ºË∏¶ »πµÊ«ﬂΩ¿¥œ¥Ÿ!");
+
                 Destroy(gameObject);
             }
         }
     }
-
 }
