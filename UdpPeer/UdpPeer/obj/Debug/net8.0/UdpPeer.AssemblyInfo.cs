@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("UdpPeer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2ed74f95fe15db3b4cb77633b1e9fa81004c260a")]
 [assembly: System.Reflection.AssemblyProductAttribute("UdpPeer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("UdpPeer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
