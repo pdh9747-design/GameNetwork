@@ -1,9 +1,9 @@
-
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.Netcode;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     public float moveSpeed = 5f;
     public float gravity = -9.81f;
@@ -16,8 +16,16 @@ public class PlayerMovement : MonoBehaviour
         controller = GetComponent<CharacterController>();
     }
 
+    public override void OnNetworkSpawn()
+    {
+        controller.enabled = IsOwner;
+    }
+
     void Update()
     {
+        if (!IsOwner || !IsSpawned)
+            return;
+
         if (Keyboard.current == null)
             return;
 
@@ -39,9 +47,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 move = new Vector3(x, 0f, z).normalized;
 
         if (controller.isGrounded && verticalVelocity < 0f)
-        {
             verticalVelocity = -2f;
-        }
 
         verticalVelocity += gravity * Time.deltaTime;
 
