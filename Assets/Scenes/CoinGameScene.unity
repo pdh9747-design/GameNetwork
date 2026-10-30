@@ -1802,14 +1802,6 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 4096017736
       objectReference: {fileID: 0}
-    - target: {fileID: 872086639023107069, guid: 5f8d1cf94ec8fe648ac0d67803fc159e, type: 3}
-      propertyPath: SceneMigrationSynchronization
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 872086639023107069, guid: 5f8d1cf94ec8fe648ac0d67803fc159e, type: 3}
-      propertyPath: InScenePlacedSourceGlobalObjectIdHash
-      value: 787147699
-      objectReference: {fileID: 0}
     - target: {fileID: 2428312409006130672, guid: 5f8d1cf94ec8fe648ac0d67803fc159e, type: 3}
       propertyPath: m_Name
       value: Coin
