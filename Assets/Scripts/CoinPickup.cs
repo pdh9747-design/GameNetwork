@@ -4,16 +4,34 @@ using System.Collections.Generic;
 
 public class CoinPickup : NetworkBehaviour
 {
-    private static readonly HashSet<ulong> collectedCoins = new HashSet<ulong>();
+    private static readonly HashSet<ulong> collectedCoins =
+        new HashSet<ulong>();
 
     [SerializeField] private float pickupDistance = 2.0f;
 
+    public override void OnNetworkSpawn()
+    {
+        if (IsServer && GameScore.Instance != null)
+        {
+            GameScore.Instance.RegisterCoin();
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (!IsServer || !IsSpawned) return;
+        Debug.Log("코인 충돌 감지: " + other.name);
 
-        NetworkObject player = other.GetComponent<NetworkObject>();
-        if (player == null) return;
+        if (!IsServer || !IsSpawned)
+            return;
+
+        NetworkObject player =
+            other.GetComponentInParent<NetworkObject>();
+
+        if (player == null)
+        {
+            Debug.Log("플레이어 NetworkObject를 찾지 못함");
+            return;
+        }
 
         float distance = Vector3.Distance(
             transform.position,
@@ -22,19 +40,25 @@ public class CoinPickup : NetworkBehaviour
 
         if (distance > pickupDistance)
         {
-            Debug.Log("코인 획득 거리가 초과되어 거부됨");
+            Debug.Log("획득 거리 초과: " + distance);
             return;
         }
 
         ulong coinId = NetworkObjectId;
 
-        if (collectedCoins.Contains(coinId)) return;
-        collectedCoins.Add(coinId);
+        if (!collectedCoins.Add(coinId))
+            return;
 
         if (GameScore.Instance != null)
+        {
             GameScore.Instance.AddScore();
+            GameScore.Instance.CollectCoin();
+        }
+
+        Debug.Log("코인 획득 성공!");
 
         NetworkObject coin = GetComponent<NetworkObject>();
+
         if (coin != null && coin.IsSpawned)
             coin.Despawn();
     }

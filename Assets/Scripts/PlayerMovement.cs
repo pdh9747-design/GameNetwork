@@ -26,6 +26,10 @@ public class PlayerMovement : NetworkBehaviour
         if (!IsOwner || !IsSpawned)
             return;
 
+        if (GameScore.Instance == null ||
+            !GameScore.Instance.GameStarted.Value)
+            return;
+
         if (Keyboard.current == null)
             return;
 
