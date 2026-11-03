@@ -19,11 +19,23 @@ public class ScoreUI : MonoBehaviour
     {
         if (GameScore.Instance == null ||
             !GameScore.Instance.IsSpawned)
+        {
+            isCleared = false;
+
+            if (restartButton != null)
+                restartButton.SetActive(false);
+
             return;
+        }
 
         displayedScore = GameScore.Instance.Score.Value;
         remainingCoins = GameScore.Instance.RemainingCoins.Value;
-        isCleared = remainingCoins == 0;
+
+        bool gameStarted = GameScore.Instance.GameStarted.Value;
+
+        // 게임이 시작된 상태이고,
+        // 남은 코인이 0일 때만 클리어 처리
+        isCleared = gameStarted && remainingCoins == 0;
 
         if (restartButton != null)
             restartButton.SetActive(isCleared);
@@ -31,17 +43,25 @@ public class ScoreUI : MonoBehaviour
 
     private void OnGUI()
     {
-        GUI.Box(new Rect(10, 170, 200, 40),
-            "점수: " + displayedScore);
+        GUI.Box(
+            new Rect(10, 170, 200, 40),
+            "점수: " + displayedScore
+        );
 
-        GUI.Box(new Rect(10, 215, 200, 40),
-            "남은 코인: " + remainingCoins);
+        GUI.Box(
+            new Rect(10, 215, 200, 40),
+            "남은 코인: " + remainingCoins
+        );
 
         if (isCleared)
         {
             GUI.Box(
-                new Rect(Screen.width / 2 - 100,
-                         Screen.height / 2 - 30, 200, 60),
+                new Rect(
+                    Screen.width / 2 - 100,
+                    Screen.height / 2 - 30,
+                    200,
+                    60
+                ),
                 "CLEAR!"
             );
         }

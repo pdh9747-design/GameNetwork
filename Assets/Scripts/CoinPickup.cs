@@ -62,4 +62,8 @@ public class CoinPickup : NetworkBehaviour
         if (coin != null && coin.IsSpawned)
             coin.Despawn();
     }
+    public static void ResetCollectedCoins()
+    {
+        collectedCoins.Clear();
+    }
 }

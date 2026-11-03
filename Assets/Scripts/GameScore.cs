@@ -26,6 +26,15 @@ public class GameScore : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         Instance = this;
+
+        if (IsServer)
+        {
+            Score.Value = 0;
+            RemainingCoins.Value = 0;
+            GameStarted.Value = false;
+
+            CoinPickup.ResetCollectedCoins();
+        }
     }
 
     public override void OnNetworkDespawn()
